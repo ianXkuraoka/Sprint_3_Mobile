@@ -4,7 +4,7 @@ import Login from "./src/Screen/Login";
 import Welcome from "./src/Screen/Home";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStack } from "./src/types/index";
-import Recomendation from "./src/Screen/Recomendation";
+import Recommendation from "./src/Screen/Recommendations";
 
 const Stack = createNativeStackNavigator<RootStack>();
 
@@ -14,7 +14,7 @@ const App = () => {
       <Stack.Navigator>
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Recomendation" component={Recomendation} />
+        <Stack.Screen name="Recommendations" component={Recommendation} />
         <Stack.Screen name="Menu" component={Welcome} />
       </Stack.Navigator>
     </NavigationContainer>
