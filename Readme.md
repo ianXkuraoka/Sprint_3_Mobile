@@ -9,9 +9,9 @@ O InvestSmart é um assessor virtual de investimentos projetado para pessoas fí
 ## Integrantes do Grupo
 
 - **[Ian Xavier Kuraoka]**       - RM98860
-- **[Aksel Viktor Caminha Rae]** - RMM99011
-- **[Miguel Ruan de Souza]**     - RMM551239
-- **[Arthur Wollmann Petrin]**   - RMM98735
+- **[Aksel Viktor Caminha Rae]** - RM99011
+- **[Miguel Ruan de Souza]**     - RM551239
+- **[Arthur Wollmann Petrin]**   - RM98735
 
 ## Tecnologias Utilizadas
 
