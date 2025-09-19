@@ -1,136 +1,217 @@
-import React from 'react';
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { RootStack } from "../types/index";
-import { Header } from '../Components/Header';
-import { recommendations } from '../data/mockData';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { recommendations, investments } from '../data/mockData';
 
-const Recommendations = ({ route, navigation }: NativeStackScreenProps<RootStack, 'Recommendations'>) => {
-  const { username, email, profile } = route.params;
-  const recommendation = recommendations[profile as keyof typeof recommendations];
+const Recommendations = ({ navigation }: any) => {
+  const [selectedProfile, setSelectedProfile] = useState<string>('Conservador');
+
+  const recommendation = recommendations[selectedProfile as keyof typeof recommendations];
+
+  const handleInvest = () => {
+    Alert.alert(
+      'Investimento Simulado',
+      `Perfil ${selectedProfile} selecionado. Em um app real, redirecionaria para investimentos.`,
+      [{ text: 'OK' }]
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      <Header
-        title="Recomendações"
-        username={username}
-        showBack={true}
-        onBackPress={() => navigation.goBack()}
-      />
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Recomendações Personalizadas</Text>
+        <Text style={styles.subtitle}>Escolha seu perfil de investimento</Text>
+      </View>
 
-      <ScrollView>
-        {/* Perfil Selecionado */}
-        <View style={styles.profileCard}>
-          <Text style={styles.profileTitle}>Perfil: {profile}</Text>
-          <Text style={styles.returnText}>Retorno: {recommendation.return}</Text>
+      <View style={styles.profileSelection}>
+        <Text style={styles.sectionTitle}>Selecione seu Perfil:</Text>
+        {Object.keys(recommendations).map((profile) => (
+          <TouchableOpacity
+            key={profile}
+            style={[
+              styles.profileButton,
+              selectedProfile === profile && styles.profileButtonSelected
+            ]}
+            onPress={() => setSelectedProfile(profile)}
+          >
+            <Text style={[
+              styles.profileButtonText,
+              selectedProfile === profile && styles.profileButtonTextSelected
+            ]}>
+              {profile}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View style={styles.recommendationCard}>
+        <Text style={styles.profileTitle}>Perfil: {selectedProfile}</Text>
+        <Text style={styles.returnText}>Retorno: {recommendation.return}</Text>
+        
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>Explicação:</Text>
+          <Text style={styles.sectionText}>{recommendation.explanation}</Text>
         </View>
-
-        {/* Alocação */}
-        <Text style={styles.sectionTitle}>Alocação Sugerida</Text>
-        <View style={styles.allocationCard}>
-          <Text style={styles.allocationText}>{recommendation.allocation}</Text>
-        </View>
-
-        {/* Ativos Recomendados */}
-        <Text style={styles.sectionTitle}>Ativos Recomendados</Text>
-        <View style={styles.assetsContainer}>
-          {recommendation.assets.map((asset, idx) => (
-            <View key={idx} style={styles.assetCard}>
-              <Text style={styles.assetName}>{asset}</Text>
-            </View>
+        
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>Ativos Recomendados:</Text>
+          {recommendation.assets.map((asset, index) => (
+            <Text key={index} style={styles.assetItem}>• {asset}</Text>
           ))}
         </View>
-
-        {/* Explicação */}
-        <Text style={styles.sectionTitle}>Por quê?</Text>
-        <View style={styles.explanationCard}>
-          <Text style={styles.explanationText}>{recommendation.explanation}</Text>
+        
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>Distribuição Sugerida:</Text>
+          <Text style={styles.sectionText}>{recommendation.allocation}</Text>
         </View>
-
-        {/* Botão de Ação */}
-        <TouchableOpacity style={styles.actionButton}>
-          <Text style={styles.actionButtonText}>Aplicar Agora</Text>
+        
+        <TouchableOpacity style={styles.button} onPress={handleInvest}>
+          <Text style={styles.buttonText}>Simular Investimento</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </View>
+
+      <View style={styles.secondaryButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('Portfolio')}>
+          <Text style={styles.link}>Ver Meu Portfólio</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.disclaimer}>
+        <Text style={styles.disclaimerText}>
+          ⚠️ As recomendações são baseadas em perfis genéricos e servem apenas para fins educativos. 
+          Consulte sempre um especialista antes de investir.
+        </Text>
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#000",
-    paddingTop: 50,
-    paddingHorizontal: 16,
+    flexGrow: 1,
+    backgroundColor: '#000000',
+    padding: 16,
   },
-  profileCard: {
-    backgroundColor: "#1e1e1e",
+  header: {
+    backgroundColor: '#111111',
     padding: 20,
     borderRadius: 12,
-    marginBottom: 24,
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#333333',
   },
-  profileTitle: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
   },
-  returnText: {
-    color: "#4caf50",
-    fontSize: 16,
-    marginTop: 8,
+  subtitle: {
+    fontSize: 14,
+    color: '#CCCCCC',
+    marginTop: 4,
+  },
+  profileSelection: {
+    marginBottom: 20,
   },
   sectionTitle: {
-    color: "#fff",
     fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 16,
-    marginTop: 24,
-  },
-  allocationCard: {
-    backgroundColor: "#1e1e1e",
-    padding: 16,
-    borderRadius: 12,
-  },
-  allocationText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-  assetsContainer: {
-    marginTop: 8,
-  },
-  assetCard: {
-    backgroundColor: "#1e1e1e",
-    padding: 16,
-    borderRadius: 12,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
     marginBottom: 12,
   },
-  assetName: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  explanationCard: {
-    backgroundColor: "#1e1e1e",
+  profileButton: {
+    backgroundColor: '#111111',
     padding: 16,
-    borderRadius: 12,
-    marginBottom: 24,
+    marginBottom: 8,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#333333',
   },
-  explanationText: {
-    color: "#fff",
+  profileButtonSelected: {
+    borderColor: '#FFFFFF',
+    backgroundColor: '#222222',
+  },
+  profileButtonText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#CCCCCC',
+    fontWeight: 'bold',
+  },
+  profileButtonTextSelected: {
+    color: '#FFFFFF',
+  },
+  recommendationCard: {
+    backgroundColor: '#111111',
+    padding: 20,
+    borderRadius: 12,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#333333',
+  },
+  profileTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  returnText: {
+    fontSize: 16,
+    color: '#4CAF50',
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  section: {
+    marginBottom: 16,
+  },
+  sectionLabel: {
     fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  sectionText: {
+    fontSize: 14,
+    color: '#CCCCCC',
     lineHeight: 20,
   },
-  actionButton: {
-    backgroundColor: "#4caf50",
-    padding: 16,
-    borderRadius: 12,
-    alignItems: "center",
-    marginBottom: 32,
+  assetItem: {
+    fontSize: 14,
+    color: '#CCCCCC',
+    marginBottom: 4,
   },
-  actionButtonText: {
-    color: "#fff",
+  button: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  buttonText: {
+    color: '#000000',
+    fontWeight: 'bold',
     fontSize: 16,
-    fontWeight: "600",
+  },
+  secondaryButton: {
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  link: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    textDecorationLine: 'underline',
+  },
+  disclaimer: {
+    backgroundColor: '#333333',
+    padding: 16,
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FFFFFF',
+  },
+  disclaimerText: {
+    fontSize: 12,
+    color: '#CCCCCC',
+    textAlign: 'center',
   },
 });
 

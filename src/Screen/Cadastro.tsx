@@ -3,6 +3,7 @@ import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStack } from "../types/index";
+import React from "react";
 
 const Cadastro = ({ navigation }: NativeStackScreenProps<RootStack>) => {
   const [username, setUsername] = useState("");
@@ -81,36 +82,38 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#000000",
   },
   titulo: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 32,
     textAlign: "center",
+    color: "#FFFFFF",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#444444",
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#111111",
+    color: "#FFFFFF",
   },
   button: {
-    backgroundColor: "#6200ee",
+    backgroundColor: "#FFFFFF",
     padding: 14,
     borderRadius: 8,
     alignItems: "center",
     marginBottom: 16,
   },
   buttonText: {
-    color: "#fff",
+    color: "#000000",
     fontWeight: "bold",
   },
   link: {
     textAlign: "center",
-    color: "#0066cc",
+    color: "#FFFFFF",
     textDecorationLine: "underline",
   },
 });
