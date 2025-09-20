@@ -88,8 +88,8 @@ O InvestSmart é um assessor virtual de investimentos projetado para pessoas fí
 
 1. **Clone o repositório:**
 ```bash
-git clone [URL_DO_REPOSITORIO]
-cd SprintMobile2025
+git clone 
+cd 
 ```
 
 2. **Instale as dependências:**
